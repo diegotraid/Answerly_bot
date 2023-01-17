@@ -1,11 +1,10 @@
 import requests
+import api_data
 
-
-api_key = "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"
 
 # autorizacion de la api key
 headers = {
-    'Authorization': f'Bearer {api_key}'}
+    'Authorization': f'Bearer {api_data.api_key}'}
 
 
 # me conecto a los parametros que yo quiero de openAI
