@@ -1,13 +1,7 @@
 import tweepy
-
-
-api_key = "V9kNI1mtRkqnC51Bw4BdVeR7V"
-api_secret = "MMFF3DSNws4wZetXfPdVgtNEc1Q1ifx2QMEM7vpZD0M8Cpv65i"
-bearer_token = r'AAAAAAAAAAAAAAAAAAAAAGHklAEAAAAAq%2Bo9wEq842V3dfhvKn22VDcKVJY%3DFldUeaSvl4MaSxgT0YpKOw6Qj4dApVU4UEDMh89DAid1ImvqcN'
-access_token = "1467621269155758080-xexDkvXetFLHlbuwTSkdaWxhBFVNQl"
-access_token_secret = "83fHPFyuHbgmCCzaQWDNyrrCWct2iVr1DEDZqBF2vySTx"
-client_id = "N1dfSFFiMUd2TTdyOXFxNWZRNlg6MTpjaQ"
-client_secret = "G5Pl7FkOPcB4GLcJtdGW05rhY0t_ty3rWwIb8okWx3pjmhad8I"
+import time
+from datetime import datetime
+from data_api import bearer_token, api_key, api_secret, access_token, access_token_secret, client_id, client_secret
 
 
 client = tweepy.Client(bearer_token, api_key, api_secret,
@@ -19,36 +13,32 @@ auth = tweepy.OAuth1UserHandler(
 api = tweepy.API(auth)
 
 
-'''
-# escribit tweets
-client.create_tweet(text="Hola Mundo")
+# Message to reply with if someone mentions the bot
+message = "Mencioname si tienes alguna duda"
 
+# Bot's unique ID
+client_id = client.get_me().data.id
 
-# like a tweet
-client.like("1615194873514049538")
+# This is so the bot only looks for the most recent tweets.
+start_id = 1
+initialisation_resp = client.get_users_mentions(client_id)
+if initialisation_resp.data != None:
+    start_id = initialisation_resp.data[0].id
 
-# retweet a tweet
-client.retweet("1615194873514049538")
+# Looking for mentions tweets in an endless loop
+while True:
+    response = client.get_users_mentions(client_id, since_id=start_id)
 
-'''
+    # Reply Code
+    if response.data != None:
+        for tweet in response.data:
+            try:
+                print(tweet.text)
+                client.create_tweet(
+                    in_reply_to_tweet_id=tweet.id, text=message)
+                start_id = tweet.id
+            except Exception as error:
+                print(error)
 
-
-# responder a tweet
-# client.create_tweet(in_reply_to_tweet_id="1615194873514049538",
-#                     text='Respondo este tweet desde el vsc')
-
-
-# muestra el TL, se necesita v2
-
-# for tweet in api.home_timeline():
-#     print(tweet.text)
-
-
-# me muestra todos los tweets publicados del username que coloque
-
-
-# person = client.get_user(username="DevJr_").data.id
-
-
-# for tweet in client.get_users_tweets(person).data:
-#     print(tweet.text)
+    # Delay (so the bot doesn't search for new tweets a bucn of time each second)
+    time.sleep(5)
