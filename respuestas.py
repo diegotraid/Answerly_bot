@@ -1,7 +1,6 @@
 import requests
 import api_data
 
-
 # autorizacion de la api key
 headers = {
     'Authorization': f'Bearer {api_data.api_key}'}
@@ -12,7 +11,7 @@ url = "https://api.openai.com/v1/engines/text-davinci-002/completions"
 
 
 def generar_respuesta(pregunta):
-
+    print('soy pregunta ==> ', pregunta)
     # aca se genera el prompt, le doy valores para que la respuesta sea la que yo quiero.
     data = {
         "prompt": pregunta,
@@ -28,6 +27,7 @@ def generar_respuesta(pregunta):
     respuesta = response.json()
 
     # devuelvo la misma
+    print(respuesta)
     return respuesta['choices'][0]['text']
 
 
