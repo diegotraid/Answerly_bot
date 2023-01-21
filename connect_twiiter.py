@@ -11,21 +11,21 @@ auth = tweepy.OAuth1UserHandler(
     api_key, api_secret, access_token, access_token_secret)
 api = tweepy.API(auth)
 
-# Bot's unique ID
+# Obtengo el id del usuario
 client_id = client.get_me().data.id
 
 
-# This is so the bot only looks for the most recent tweets.
+# Con esto muestra la mas reciente mencion.
 start_id = 1
 initialisation_resp = client.get_users_mentions(client_id)
 if initialisation_resp.data != None:
     start_id = initialisation_resp.data[0].id
 
-# Looking for mentions tweets in an endless loop
+# Mira menciones en un loop infinito
 while True:
     response = client.get_users_mentions(client_id, since_id=start_id)
 
-    # Reply Code
+    # Codigo de respuesta al usuario
     if response.data != None:
         for tweet in response.data:
             try:
@@ -39,5 +39,5 @@ while True:
             except Exception as error:
                 print(error)
 
-    # Delay (so the bot doesn't search for new tweets a bucn of time each second)
+    # Delay para que el bot no este buscando menciones todo el tiempo
     time.sleep(5)
