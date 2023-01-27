@@ -5,8 +5,8 @@ Este proyecto consiste en un bot de Twitter que utiliza la API de Twitter y la b
 ## Cómo funciona
 
 - El usuario menciona al bot en un tweet
-- El bot lee la pregunta y la analiza a través de ChatGPT
-- ChatGPT responde la pregunta y el bot le devuelve la respuesta al usuario
+- El bot lee la pregunta y la analiza a través de GPT-3
+- GPT-3 responde la pregunta y el bot le devuelve la respuesta al usuario
 
 ## Requisitos
 
